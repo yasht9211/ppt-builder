@@ -109,7 +109,7 @@ if all(all_API):
       model=model,
       tools=[
           search_latest_info,
-          # generate_image])
+          generate_image])
 
   #leader_agent
 else:
