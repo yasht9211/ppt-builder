@@ -10,6 +10,8 @@ from tavily import TavilyClient
 import numpy as np
 import streamlit as st
 
+st.set_page_config(layout = "wide")
+
 #=================STEP 2 LOAD ENV and API KEYS==================
 st.title("Agentic  PPT Generator")
 st.header("""User can generate,PPT,Images,and fetch Latest news""")
@@ -44,6 +46,7 @@ elif all(ALL_API):
     model = ChatGoogleGenerativeAI(
         model=selected_model,
         google_api_key=GOOGLE_API_KEY)
+
 
 else:
     st.sidebar.info("Try Valid API-keys")
@@ -108,7 +111,7 @@ if all(all_API)
           search_latest_info,
           # generate_image])
 
-  leader_agent
+  #leader_agent
 else:
     st.info("Give API-Keys first to load Agent")
 
