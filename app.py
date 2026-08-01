@@ -155,7 +155,6 @@ with tab2:
 
          code = response['messages'][-1].content[-1]['text']
          st.html(code, width="stretch", unsafe_allow_javascript=True)
-
          except Exception as err:
          st.error("Error Code: ", err)
 
