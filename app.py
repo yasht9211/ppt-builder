@@ -38,7 +38,71 @@ elif all(ALL_API):
 
   model = ChatGoogleGenerativeAI(
     model = selected_model,
-    google_api_key = api)
+    google_api_key = GOOGLE_API_KEY)
 
 else:
   st.sidebar.info("Try Valid API-keys")
+
+#==========================STEP 3=============================
+# Search latest info using Tavily
+def search_latest_info(query):
+    """This function helps to give
+    latest search using Tavily
+    based on given user query related research or
+    contents"""
+
+    client = TavilyClient(api_key=TAVILY_API_KEY)
+    response = client.search(query)
+    return response
+
+def generate_image(img_prompt, slide_no=1):
+    """
+    This function helps user to generate
+    image using free api, with given
+    img_prompt, with slide no
+    """
+
+    url = f"https://image.pollinations.ai/{img_prompt}"
+
+    import requests as r
+    content = r.get(url).content
+
+    with open(f"ai_image_{slide_no}.jpeg", "wb") as f:
+        f.write(content)
+    return url
+  def run_agent(leader_agent, query):
+    prompt = f"""Based on Below given Query,
+    your task is to call specific tool, first to
+    promptify user prompt, than call image tool, or
+    latest search if required. give slide dynamic, ui ux,
+    with creative design, keep help of function to generate image
+    based on given topic,
+    Generate image using
+    with number of slide asked, and use time sleep to hit image request on server
+    and using file handling embed this in output html, use java script function
+    give Final response output in HTML, no markdowns
+    user query given below:"""
+
+    prompt = prompt + query
+
+    response = leader_agent.invoke({
+        "messages": [
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    })
+
+    code = response["messages"][-1].content[-1]["text"]
+    return code
+
+if all(ALL_API):
+  leader_agent = create_agent(
+    model = model,
+    tools = [search_latest_info,
+             #generate image
+             ])
+  leader_agent
+else:
+  st.info("Give API-Keys first to load agent")
